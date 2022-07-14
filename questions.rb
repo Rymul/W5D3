@@ -1,5 +1,7 @@
 require "sqlite3"
 require_relative "questions_db.rb"
+require_relative "users.rb"
+require_relative "replies.rb"
 
 
 class Question
@@ -49,5 +51,8 @@ class Question
     Reply.find_by_question_id(self.id)
   end
 
+  def followers 
+    QuestionFollow.followers_for_question_id(self.id)
+  end 
 
 end

@@ -87,19 +87,23 @@ VALUES
     ((SELECT id FROM questions WHERE title = 'Assessment date?'), (SELECT id FROM users WHERE fname = 'Ryan'));
 
 INSERT INTO
-    replies (body, question_id, user_id, parent_reply_id )
+    replies (body, question_id, user_id, parent_reply_id)
 VALUES
     ('Class starts at 9:00am', (SELECT id FROM questions WHERE title = 'Class start time'), (SELECT id FROM users WHERE fname = 'Darren'), NULL),
 
     ('It''s 9:45am.', (SELECT id FROM questions WHERE title = 'Current time?'), (SELECT id FROM users WHERE fname = 'Ryan'), NULL),
 
-    ('It is on Tuesday July 19th.', (SELECT id FROM questions WHERE title = 'Assessment date?'), (SELECT id FROM users WHERE fname = 'Taowei'), NULL),
+    ('It''s on Tuesday July 19th.', (SELECT id FROM questions WHERE title = 'Assessment date?'), (SELECT id FROM users WHERE fname = 'Taowei'), NULL),
 
-    ('A query is a way to look up data in a table.', (SELECT id FROM questions WHERE title = 'Query definition'), (SELECT id FROM users WHERE fname = 'Disnee'), NULL),
+    ('A query is a way to look up data in a table.', (SELECT id FROM questions WHERE title = 'Query definition'), (SELECT id FROM users WHERE fname = 'Disnee'), NULL);
 
-    ('I''m pretty sure the test is tomorrow!', (SELECT id FROM questions WHERE title = 'Assessment date?'), (SELECT id FROM users WHERE fname = 'Ryan'), (SELECT id FROM replies WHERE body = 'It is on Tuesday July 19th.')),
+INSERT INTO
+    replies (body, question_id, user_id, parent_reply_id )
+VALUES
+    ('I''m pretty sure the test is tomorrow!', (SELECT id FROM questions WHERE title = 'Assessment date?'), (SELECT id FROM users WHERE fname = 'Ryan'), (SELECT id FROM replies WHERE body = 'It''s on Tuesday July 19th.')),
 
     ('It''s way too early!', (SELECT id FROM questions WHERE title = 'Current time?'), (SELECT id FROM users WHERE fname = 'Disnee'), (SELECT id FROM replies WHERE body = 'It''s 9:45am.'));
+
 
 INSERT INTO
     question_likes (question_id, user_id)

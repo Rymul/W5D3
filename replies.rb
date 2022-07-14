@@ -1,5 +1,7 @@
 require "sqlite3"
 require_relative "questions_db.rb"
+require_relative "questions.rb"
+require_relative "users.rb"
 
 class Reply
   attr_accessor :id, :body, :question_id, :user_id, :parent_reply_id
@@ -50,15 +52,27 @@ class Reply
   end
 
   def parent_reply
-    data = QuestionsDBConnection.instance.execute(<<-SQL)
-      SELECT * FROM replies WHERE parent_reply_id IS NULL
+    parent_reply_finder(self.parent_reply_id)
+  end
+
+  def parent_reply_finder(parent_reply_id)
+    data = QuestionsDBConnection.instance.execute(<<-SQL, parent_reply_id)
+      SELECT * 
+      FROM replies 
+      WHERE id = ?
     SQL
     data.map { |datum| Reply.new(datum) }
   end
 
-  def child_replies
-    data = QuestionsDBConnection.instance.execute(<<-SQL)
-      SELECT * FROM replies WHERE parent_reply_id IS NOT NULL
+  def child_reply
+    child_reply_finder(self.id)
+  end
+
+  def child_reply_finder(id)
+    data = QuestionsDBConnection.instance.execute(<<-SQL, id)
+      SELECT * 
+      FROM replies 
+      WHERE parent_reply_id = ? LIMIT 1
     SQL
     data.map { |datum| Reply.new(datum) }
   end
